@@ -11,9 +11,8 @@ from auth import verify_token
 router = APIRouter(prefix="/attendance", tags=["Attendance"])
 
 
-# ------------------------------------------------
 # Database Dependency
-# ------------------------------------------------
+
 def get_db():
     db = SessionLocal()
     try:
@@ -22,9 +21,8 @@ def get_db():
         db.close()
 
 
-# ==========================================================
-# 1️⃣ Teacher: Mark Attendance (Role Protected)
-# ==========================================================
+# Teacher: Mark Attendance (Role Protected)
+
 @router.post("/")
 def mark_attendance(
     student_id: int,
@@ -53,9 +51,8 @@ def mark_attendance(
     return {"message": "Attendance marked successfully"}
 
 
-# ==========================================================
-# 2️⃣ Overall Attendance Percentage
-# ==========================================================
+# Overall Attendance Percentage
+
 @router.get("/percentage/{student_id}")
 def attendance_percentage(
     student_id: int,
@@ -82,9 +79,8 @@ def attendance_percentage(
     return {"percentage": round(percentage, 2)}
 
 
-# ==========================================================
-# 3️⃣ Subject-wise Attendance
-# ==========================================================
+# Subject-wise Attendance
+
 @router.get("/subject/{student_id}")
 def subject_wise_attendance(
     student_id: int,
@@ -122,9 +118,8 @@ def subject_wise_attendance(
     return data
 
 
-# ==========================================================
-# 4️⃣ Graph Data (JSON)
-# ==========================================================
+# Graph Data (JSON)
+
 @router.get("/graph/{student_id}")
 def attendance_graph_data(
     student_id: int,
@@ -134,9 +129,8 @@ def attendance_graph_data(
     return subject_wise_attendance(student_id, token, db)
 
 
-# ==========================================================
-# 5️⃣ Graph Image (PNG)
-# ==========================================================
+# Graph Image (PNG)
+
 @router.get("/graph-image/{student_id}")
 def attendance_graph_image(
     student_id: int,
@@ -166,9 +160,8 @@ def attendance_graph_image(
     return FileResponse(file_path, media_type="image/png")
 
 
-# ==========================================================
-# 6️⃣ Monthly Attendance Percentage (PostgreSQL Syntax)
-# ==========================================================
+# Monthly Attendance Percentage (PostgreSQL Syntax)
+
 @router.get("/monthly-percentage/{student_id}")
 def monthly_attendance_percentage(
     student_id: int,
@@ -199,9 +192,8 @@ def monthly_attendance_percentage(
     return {"percentage": round(percentage, 2)}
 
 
-# ==========================================================
-# 7️⃣ Monthly Subject-wise Graph Image (PostgreSQL)
-# ==========================================================
+# Monthly Subject-wise Graph Image (PostgreSQL)
+
 @router.get("/monthly-graph-image/{student_id}")
 def monthly_graph_image(
     student_id: int,
