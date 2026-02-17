@@ -25,13 +25,20 @@ def create_class(class_name: str, teacher_id: int, db: Session = Depends(get_db)
 
     if not teacher:
         raise HTTPException(status_code=404, detail="Teacher not found")
-
-    db.execute(
-        text("INSERT INTO classes (class_name, teacher_id) VALUES (:name, :tid)"),
+    result = db.execute(
+        text("""
+            INSERT INTO classes (class_name, teacher_id)
+            VALUES (:name, :tid)
+            RETURNING id
+        """),
         {"name": class_name, "tid": teacher_id}
     )
-
+    class_id = result.fetchone()[0] 
     db.commit()
-    return {"message": "Class created successfully"}
+    return {
+        "message": "Class created successfully",
+        "class_id": class_id
+    }
+
 
 
