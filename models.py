@@ -15,3 +15,10 @@ class Class(Base):
     id = Column(Integer, primary_key=True, index=True)
     class_name = Column(String(100))
     teacher_id = Column(Integer, ForeignKey("users.id"))
+
+class Attendance(Base):
+    __tablename__ = "attendance"
+    id = Column(Integer, primary_key=True, index=True)
+    student_id = Column(Integer, ForeignKey("users.id"))
+    class_id = Column(Integer, ForeignKey("classes.id"))
+    status = Column(String(20))
